@@ -307,21 +307,84 @@ let openCard = null;
 let bracketData = null;
 
 function defDraft() {
-  return Array.from({length:7}, () => ({
-    name: '',
-    picks: Array.from({length:5}, () => ({player:'', team:'', pts:{}, eliminated:false}))
-  }));
+  return [
+    { name: 'Pete', picks: [
+      { player: 'Cameron Boozer',   team: 'Duke',     pts:{}, eliminated:false },
+      { player: 'Morez Johnson Jr.',team: 'Michigan', pts:{}, eliminated:false },
+      { player: 'Alex Condon',      team: 'Florida',  pts:{}, eliminated:false },
+      { player: 'Thijs De Ridder',  team: 'Virginia', pts:{}, eliminated:false },
+      { player: 'Aday Mara',        team: 'Michigan', pts:{}, eliminated:false },
+    ]},
+    { name: 'Seth', picks: [
+      { player: 'Yaxel Lendeborg',  team: 'Michigan',    pts:{}, eliminated:false },
+      { player: 'Joshua Jefferson', team: 'Iowa State',  pts:{}, eliminated:false },
+      { player: 'Trey McKenney',    team: 'Michigan',    pts:{}, eliminated:false },
+      { player: 'Solo Ball',        team: 'UConn',       pts:{}, eliminated:false },
+      { player: 'Tarris Reed Jr.',  team: 'UConn',       pts:{}, eliminated:false },
+    ]},
+    { name: 'Pags', picks: [
+      { player: 'Brayden Burries',       team: 'Arizona',    pts:{}, eliminated:false },
+      { player: 'Zuby Ejiofor',          team: "St. John's", pts:{}, eliminated:false },
+      { player: 'Graham Ike',            team: 'Gonzaga',    pts:{}, eliminated:false },
+      { player: 'Tamin Lipsey',          team: 'Iowa State', pts:{}, eliminated:false },
+      { player: "Anthony Dell'Orso",     team: 'Arizona',    pts:{}, eliminated:false },
+    ]},
+    { name: 'Vik', picks: [
+      { player: 'Isaiah Evans',       team: 'Duke',      pts:{}, eliminated:false },
+      { player: 'Jaden Bradley',      team: 'Arizona',   pts:{}, eliminated:false },
+      { player: 'Koa Peat',           team: 'Arizona',   pts:{}, eliminated:false },
+      { player: 'Boogie Fland',       team: 'Florida',   pts:{}, eliminated:false },
+      { player: 'Christian Anderson', team: 'Texas Tech',pts:{}, eliminated:false },
+    ]},
+    { name: 'Baur', picks: [
+      { player: 'Thomas Haugh',      team: 'Florida',   pts:{}, eliminated:false },
+      { player: 'Keaton Wagler',     team: 'Illinois',  pts:{}, eliminated:false },
+      { player: 'Tyler Tanner',      team: 'Vanderbilt',pts:{}, eliminated:false },
+      { player: 'Labaron Philon',    team: 'Alabama',   pts:{}, eliminated:false },
+      { player: 'Braden Smith',      team: 'Purdue',    pts:{}, eliminated:false },
+    ]},
+    { name: 'Palmer', picks: [
+      { player: 'Milan Momcilovic',    team: 'Iowa State', pts:{}, eliminated:false },
+      { player: 'Kingston Flemings',   team: 'Houston',    pts:{}, eliminated:false },
+      { player: 'Emanuel Sharp',       team: 'Houston',    pts:{}, eliminated:false },
+      { player: 'Trey Kaufman-Renn',   team: 'Purdue',     pts:{}, eliminated:false },
+      { player: 'Nick Boyd',           team: 'Wisconsin',  pts:{}, eliminated:false },
+    ]},
+    { name: 'Grebe', picks: [
+      { player: 'Darius Acuff Jr.',  team: 'Arkansas', pts:{}, eliminated:false },
+      { player: 'AJ Dybantsa',       team: 'BYU',      pts:{}, eliminated:false },
+      { player: 'Jeremy Fears Jr.',  team: 'Michigan State', pts:{}, eliminated:false },
+      { player: 'Darryn Peterson',   team: 'Kansas',   pts:{}, eliminated:false },
+      { player: 'Bennett Stirtz',    team: 'Iowa',     pts:{}, eliminated:false },
+    ]},
+  ];
 }
 function loadDraft() {
-  // Check current key first, then fall back to older keys from previous versions
+  const base = defDraft();
+  // Try to load saved pts/eliminated data from any previous storage key
   const keys = ['mm_2026', 'mm_v4', 'mm_draft_v3', 'mm_league'];
   for (const k of keys) {
     try {
-      const d = JSON.parse(localStorage.getItem(k));
-      if (d && Array.isArray(d) && d.length) return d;
+      const saved = JSON.parse(localStorage.getItem(k));
+      if (!saved || !Array.isArray(saved)) continue;
+      // Merge saved points/eliminations into the hardcoded base
+      for (const baseTeam of base) {
+        const savedTeam = saved.find(s => s.name === baseTeam.name);
+        if (!savedTeam) continue;
+        for (const basePick of baseTeam.picks) {
+          const savedPick = savedTeam.picks?.find(p =>
+            p.player?.toLowerCase() === basePick.player.toLowerCase()
+          );
+          if (savedPick) {
+            basePick.pts = savedPick.pts || {};
+            basePick.eliminated = savedPick.eliminated || false;
+          }
+        }
+      }
+      break;
     } catch {}
   }
-  return defDraft();
+  return base;
 }
 function saveDraftLocal() { localStorage.setItem(STORE, JSON.stringify(draft)); }
 
