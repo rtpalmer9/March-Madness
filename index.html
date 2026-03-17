@@ -313,8 +313,15 @@ function defDraft() {
   }));
 }
 function loadDraft() {
-  try { return JSON.parse(localStorage.getItem(STORE)) || defDraft(); }
-  catch { return defDraft(); }
+  // Check current key first, then fall back to older keys from previous versions
+  const keys = ['mm_2026', 'mm_v4', 'mm_draft_v3', 'mm_league'];
+  for (const k of keys) {
+    try {
+      const d = JSON.parse(localStorage.getItem(k));
+      if (d && Array.isArray(d) && d.length) return d;
+    } catch {}
+  }
+  return defDraft();
 }
 function saveDraftLocal() { localStorage.setItem(STORE, JSON.stringify(draft)); }
 
@@ -688,7 +695,11 @@ window.goTab = function(name, btn) {
   document.querySelectorAll('.bni').forEach(b => b.classList.remove('on'));
   document.getElementById('v-' + name).classList.add('on');
   btn.classList.add('on');
-  if (name === 'edit') buildEdit();
+  // Always re-render the target tab with latest data
+  if (name === 'lb')      { renderStats(); renderBoard(); }
+  if (name === 'teams')   renderTeams();
+  if (name === 'bracket') renderBracket();
+  if (name === 'edit')    buildEdit();
   window.scrollTo({top:0, behavior:'instant'});
 };
 
