@@ -395,8 +395,32 @@ body::before{
 
 <script>
 // ═══════════════════════════════════════════════
-// Autocomplete powered by live ESPN API — no hardcoded roster data
+// TEAM ABBR → ESPN LOGO (2026 tournament teams)
+// ═══════════════════════════════════════════════
+const ABBR = {
+  'duke':'DUKE','arizona':'ARIZ','michigan':'MICH','florida':'FLA',
+  'houston':'HOU','purdue':'PUR','uconn':'CONN','iowa state':'ISU',
+  'michigan state':'MSU','illinois':'ILL','gonzaga':'GONZ','virginia':'UVA',
+  'nebraska':'NEB','kansas':'KAN','arkansas':'ARK','alabama':'ALA',
+  'wisconsin':'WIS','vanderbilt':'VAN',"st. john's":'SJU','texas tech':'TTU',
+  'louisville':'LOU','south florida':'USF','north carolina':'UNC','byu':'BYU',
+  'tennessee':'TENN',"saint mary's":'SMC','miami (fla.)':'MIA','ucla':'UCLA',
+  'kentucky':'UK','ohio state':'OSU','georgia':'UGA','villanova':'NOVA',
+  'clemson':'CLEM','tcu':'TCU','saint louis':'SLU','utah state':'USU',
+  'iowa':'IOWA','texas a&m':'TXAM','santa clara':'SCU','ucf':'UCF',
+  'missouri':'MIZ','vcu':'VCU','texas':'TEX','nc state':'NCST',
+  'miami (ohio)':'MIOH','smu':'SMU','northern iowa':'UNI','high point':'HPU',
+  'mcneese':'MCNS','akron':'AKR','cal baptist':'CBU','troy':'TROY',
+  'hawaii':'HAW','hofstra':'HOF','north dakota state':'NDSU','penn':'PENN',
+  'wright state':'WRST','kennesaw state':'KENN','furman':'FUR','queens':'QUNCC',
+  'tennessee state':'TNST','idaho':'IDHO','siena':'SIE',
+  'long island university':'LIU','umbc':'UMBC','howard':'HOW',
+  'lehigh':'LEH','prairie view a&m':'PVAM',
+};
 
+function teamLogoUrl(name){
+  if(!name) return null;
+  const a = ABBR[name.toLowerCase().trim()];
   return a ? `https://a.espncdn.com/i/teamlogos/ncaa/500/${a}.png` : null;
 }
 
