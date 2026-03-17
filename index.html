@@ -6,152 +6,74 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="theme-color" content="#0d0d0f"/>
-<title>Madness</title>
+<title>Madness Draft</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════ RESET ═══════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{height:100%;-webkit-text-size-adjust:100%}
-body{
-  min-height:100dvh;background:#0d0d0f;color:#f0f0f2;
-  font-family:'Inter',sans-serif;font-size:15px;
-  overflow-x:hidden;-webkit-font-smoothing:antialiased;
-  overscroll-behavior:none;
-}
-
-/* ═══════════════════════════ TOKENS ══════════════════════════ */
+body{min-height:100dvh;background:#0d0d0f;color:#f0f0f2;font-family:'Inter',sans-serif;font-size:15px;overflow-x:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
 :root{
-  --bg:       #0d0d0f;
-  --s1:       #161618;
-  --s2:       #1c1c1f;
-  --s3:       #222226;
-  --s4:       #2a2a2f;
-  --rim:      rgba(255,255,255,0.07);
-  --rim2:     rgba(255,255,255,0.12);
-  --orange:   #f06a25;
-  --orange2:  #ff8c47;
-  --orangef:  rgba(240,106,37,0.14);
-  --orangeb:  rgba(240,106,37,0.28);
-  --cream:    #f5e6d3;
-  --red:      #e84855;
-  --redf:     rgba(232,72,85,0.12);
-  --green:    #1db974;
-  --greenf:   rgba(29,185,116,0.12);
-  --gold:     #f5c842;
-  --silver:   #9ba8b8;
-  --bronze:   #c47c3a;
-  --text:     #f0f0f2;
-  --text2:    #7a7a85;
-  --text3:    #3a3a42;
-  --safe-b:   env(safe-area-inset-bottom,0px);
-  --safe-t:   env(safe-area-inset-top,0px);
-  --nav-h:    60px;
+  --bg:#0d0d0f;--s1:#161618;--s2:#1c1c1f;--s3:#222226;--s4:#2a2a2f;
+  --rim:rgba(255,255,255,0.07);--rim2:rgba(255,255,255,0.13);
+  --orange:#f06a25;--orange2:#ff8c47;--orangef:rgba(240,106,37,0.13);
+  --red:#e84855;--redf:rgba(232,72,85,0.12);
+  --green:#1db974;--greenf:rgba(29,185,116,0.11);
+  --gold:#f5c842;--silver:#9ba8b8;--bronze:#c47c3a;
+  --text:#f0f0f2;--text2:#7a7a85;--text3:#3a3a42;
+  --safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);
+  --nav-h:60px;
 }
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 40% at 100% 0%,rgba(240,106,37,.06) 0%,transparent 55%),
+             radial-gradient(ellipse 60% 35% at 0% 100%,rgba(245,200,66,.04) 0%,transparent 55%)}
 
-/* ═══════════════════════════ AMBIENT ═════════════════════════ */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 80% 40% at 100% 0%,rgba(240,106,37,.06) 0%,transparent 55%),
-    radial-gradient(ellipse 60% 35% at 0% 100%,rgba(245,200,66,.04) 0%,transparent 55%);
-}
-
-/* ═══════════════════════════ TOP BAR ═════════════════════════ */
-.topbar{
-  position:fixed;top:0;left:0;right:0;z-index:60;
-  height:calc(52px + var(--safe-t));padding-top:var(--safe-t);
-  display:flex;align-items:center;justify-content:space-between;
-  padding-left:18px;padding-right:18px;
-  background:rgba(13,13,15,0.9);
-  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-  border-bottom:1px solid var(--rim);
-}
-.tb-logo{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;color:var(--text)}
+/* ── TOP BAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:60;height:calc(52px + var(--safe-t));padding-top:var(--safe-t);
+  display:flex;align-items:center;justify-content:space-between;padding-left:18px;padding-right:18px;
+  background:rgba(13,13,15,0.92);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-bottom:1px solid var(--rim)}
+.tb-logo{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px}
 .tb-logo em{color:var(--orange);font-style:normal}
 .tb-right{display:flex;align-items:center;gap:10px}
-.live-pill{
-  display:flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:20px;
-  background:var(--redf);border:1px solid rgba(232,72,85,.2);
-  font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);
-}
+.live-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;
+  background:var(--redf);border:1px solid rgba(232,72,85,.22);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--red)}
 .ldot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.upd{font-size:11px;color:var(--text3);font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.upd{font-size:11px;color:var(--text3);letter-spacing:.3px}
 
-/* ═══════════════════════════ BOTTOM NAV ══════════════════════ */
-.bnav{
-  position:fixed;bottom:0;left:0;right:0;z-index:60;
-  height:calc(var(--nav-h) + var(--safe-b));
-  padding-bottom:var(--safe-b);
-  display:flex;align-items:stretch;
-  background:rgba(13,13,15,0.96);
-  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
-  border-top:1px solid var(--rim);
-}
-.bni{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;cursor:pointer;border:none;background:transparent;
-  color:var(--text3);transition:color .18s;padding:0 4px;
-}
+/* ── BOTTOM NAV ── */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:60;height:calc(var(--nav-h) + var(--safe-b));
+  padding-bottom:var(--safe-b);display:flex;align-items:stretch;
+  background:rgba(13,13,15,0.96);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-top:1px solid var(--rim)}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  cursor:pointer;border:none;background:transparent;color:var(--text3);transition:color .18s;padding:0 4px}
 .bni.on{color:var(--orange)}
-.bni svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:stroke .18s}
-.bni span{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;transition:color .18s}
-.bni.on svg{stroke:var(--orange)}
+.bni svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bni span{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
 
-/* active tab indicator dot */
-.bni.on::after{
-  content:'';display:block;width:4px;height:4px;border-radius:50%;
-  background:var(--orange);margin-top:-2px;
-}
-
-/* ═══════════════════════════ SCROLL AREA ═════════════════════ */
-.page-wrap{
-  position:relative;z-index:1;
-  padding-top:calc(52px + var(--safe-t));
-  padding-bottom:calc(var(--nav-h) + var(--safe-b) + 16px);
-  min-height:100dvh;
-}
-.view{display:none;animation:fadeUp .28s ease both}
+/* ── PAGE WRAP ── */
+.page-wrap{position:relative;z-index:1;padding-top:calc(52px + var(--safe-t));padding-bottom:calc(var(--nav-h) + var(--safe-b) + 16px);min-height:100dvh}
+.view{display:none;animation:fadeUp .25s ease both}
 .view.on{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .inner{padding:16px 14px;max-width:640px;margin:0 auto}
 
-/* ═══════════════════════════ SECTION LABEL ═══════════════════ */
-.slbl{
-  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:var(--text3);margin-bottom:12px;padding-left:2px;
-}
-
-/* ═══════════════════════════ STAT STRIP ═════════════════════ */
+/* ── STAT STRIP ── */
 .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
-.stat-box{
-  background:var(--s1);border:1px solid var(--rim);border-radius:14px;
-  padding:14px 8px 12px;text-align:center;
-}
+.stat-box{background:var(--s1);border:1px solid var(--rim);border-radius:14px;padding:14px 8px 12px;text-align:center}
 .stat-box .v{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:var(--orange);line-height:1}
 .stat-box .l{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-top:4px}
 
-/* ═══════════════════════════ LEADERBOARD ════════════════════ */
+/* ── LEADERBOARD ── */
 .lb-stack{display:flex;flex-direction:column;gap:9px}
-.lb-card{
-  background:var(--s1);border:1px solid var(--rim);border-radius:16px;
-  overflow:hidden;cursor:pointer;transition:border-color .2s;
-  will-change:transform;
-}
-.lb-card:active{transform:scale(.993)}
+.lb-card{background:var(--s1);border:1px solid var(--rim);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.lb-card:active{transform:scale(.995)}
 .lb-card.r1{border-color:rgba(245,200,66,.3);background:linear-gradient(140deg,#1a1710 0%,#161618 100%)}
 .lb-card.r2{border-color:rgba(155,168,184,.18)}
 .lb-card.r3{border-color:rgba(196,124,58,.2)}
 .lb-card.open .lb-head{border-bottom:1px solid var(--rim)}
-
 .lb-head{display:flex;align-items:center;gap:12px;padding:14px 16px}
-.lb-rank{
-  width:36px;height:36px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Oswald',sans-serif;font-size:17px;font-weight:700;
-}
+.lb-rank{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:17px;font-weight:700}
 .r1 .lb-rank{background:var(--gold);color:#0d0d0f}
 .r2 .lb-rank{background:var(--silver);color:#0d0d0f}
 .r3 .lb-rank{background:var(--bronze);color:#fff}
@@ -161,164 +83,104 @@ body::before{
 .lb-sub{font-size:12px;color:var(--text2);margin-top:2px}
 .lb-score{text-align:right;flex-shrink:0}
 .lb-pts{font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;line-height:1}
-.r1 .lb-pts{color:var(--gold)}
-.r2 .lb-pts{color:var(--silver)}
-.r3 .lb-pts{color:var(--bronze)}
-.rn .lb-pts{color:var(--orange)}
+.r1 .lb-pts{color:var(--gold)}.r2 .lb-pts{color:var(--silver)}.r3 .lb-pts{color:var(--bronze)}.rn .lb-pts{color:var(--orange)}
 .lb-ptslbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3)}
 .lb-chev{width:16px;height:16px;flex-shrink:0;stroke:var(--text3);fill:none;stroke-width:2.2;stroke-linecap:round;transition:transform .25s}
 .lb-card.open .lb-chev{transform:rotate(180deg)}
-
-/* expand panel */
 .lb-panel{max-height:0;overflow:hidden;transition:max-height .32s cubic-bezier(.4,0,.2,1)}
-.lb-card.open .lb-panel{max-height:420px}
+.lb-card.open .lb-panel{max-height:480px}
 .lb-panel-inner{padding:10px 14px 14px;display:flex;flex-direction:column;gap:7px}
 
-/* player row inside card */
+/* ── PLAYER ROW ── */
 .pr{display:flex;align-items:center;gap:9px;background:var(--s2);border-radius:10px;padding:9px 10px}
 .pr.elim{opacity:.36}
 .pr-logo{width:26px;height:26px;border-radius:6px;object-fit:contain;background:var(--s3);flex-shrink:0}
-.pr-logofb{width:26px;height:26px;border-radius:6px;background:var(--s3);border:1px solid var(--rim2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text2);flex-shrink:0;letter-spacing:.5px}
+.pr-logofb{width:26px;height:26px;border-radius:6px;background:var(--s3);border:1px solid var(--rim2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text2);flex-shrink:0}
 .pr-info{flex:1;min-width:0}
 .pr-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pr.elim .pr-name{text-decoration:line-through;color:var(--text2)}
-.pr-team{font-size:11px;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-team{font-size:11px;color:var(--text3);margin-top:1px}
 .pr-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.pr-dot.alive{background:var(--green)}
-.pr-dot.out{background:var(--red)}
-.pr-dot.idle{background:var(--s4)}
+.pr-dot.alive{background:var(--green)}.pr-dot.out{background:var(--red)}.pr-dot.idle{background:var(--s4)}
 .pr-pts{font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;color:var(--orange);flex-shrink:0;min-width:28px;text-align:right}
 .pr.elim .pr-pts{color:var(--text3)}
 
-/* ═══════════════════════════ TEAMS VIEW ═════════════════════ */
+/* ── TEAMS VIEW ── */
 .teams-stack{display:flex;flex-direction:column;gap:12px}
 .team-card{background:var(--s1);border:1px solid var(--rim);border-radius:16px;overflow:hidden}
-.team-hdr{
-  display:flex;align-items:center;gap:12px;padding:14px 16px;
-  border-bottom:1px solid var(--rim);
-}
-.team-hdr-logo{width:36px;height:36px;border-radius:8px;object-fit:contain;background:var(--s2);flex-shrink:0}
-.team-hdr-logofb{width:36px;height:36px;border-radius:8px;background:var(--s2);border:1px solid var(--rim2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;letter-spacing:.5px}
-.team-hdr-info{flex:1;min-width:0}
-.team-owner{font-size:16px;font-weight:600;color:var(--text)}
+.team-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--rim)}
+.team-owner{font-size:16px;font-weight:600;color:var(--text);flex:1}
 .team-total{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:var(--orange);line-height:1;flex-shrink:0}
 .team-players{padding:10px 14px 14px;display:flex;flex-direction:column;gap:7px}
 
-/* ═══════════════════════════ BRACKET VIEW ═══════════════════ */
+/* ── BRACKET ── */
+.bracket-hint{font-size:12px;color:var(--text3);text-align:center;margin-bottom:12px}
 .bracket-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px}
-.bracket-outer::-webkit-scrollbar{height:4px}
-.bracket-outer::-webkit-scrollbar-track{background:var(--s1)}
+.bracket-outer::-webkit-scrollbar{height:3px}
 .bracket-outer::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
-.bracket-hint{font-size:12px;color:var(--text3);text-align:center;margin-bottom:14px}
-.bracket{display:flex;gap:0;width:max-content;min-width:100%;padding:0 4px}
-.b-round{display:flex;flex-direction:column;min-width:140px}
-.b-round-lbl{
-  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:var(--text3);text-align:center;padding:10px 8px 12px;
-}
-.b-games{display:flex;flex-direction:column;flex:1;justify-content:space-around;gap:4px;padding:0 4px}
-.b-game{
-  background:var(--s1);border:1px solid var(--rim);border-radius:10px;overflow:hidden;
-  transition:border-color .2s;
-}
+.bracket{display:flex;width:max-content;min-width:100%}
+.b-round{display:flex;flex-direction:column;min-width:148px;padding:0 4px}
+.b-round-lbl{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);text-align:center;padding:10px 4px 12px}
+.b-games{display:flex;flex-direction:column;flex:1;justify-content:space-around;gap:4px}
+.b-game{background:var(--s1);border:1px solid var(--rim);border-radius:10px;overflow:hidden}
 .b-game.live{border-color:rgba(240,106,37,.4)}
-.b-team{
-  display:flex;align-items:center;gap:6px;padding:7px 9px;
-  border-bottom:1px solid var(--rim);
-}
+.b-team{display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid var(--rim)}
 .b-team:last-child{border-bottom:none}
 .b-team.winner{background:rgba(29,185,116,.08)}
-.b-team.loser{opacity:.4}
+.b-team.loser{opacity:.38}
 .b-seed{font-size:10px;font-weight:700;color:var(--text3);width:14px;text-align:center;flex-shrink:0}
 .b-tlogo{width:18px;height:18px;border-radius:4px;object-fit:contain;background:var(--s3);flex-shrink:0}
 .b-tlogofb{width:18px;height:18px;border-radius:4px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:var(--text3);flex-shrink:0}
-.b-tname{flex:1;font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.b-tname{flex:1;font-size:11px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .b-team.loser .b-tname{color:var(--text3)}
 .b-score{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:var(--text);flex-shrink:0;min-width:22px;text-align:right}
 .b-team.winner .b-score{color:var(--green)}
 .b-status{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;text-align:center;padding:3px;color:var(--orange)}
-.bracket-loading{text-align:center;padding:40px 20px;color:var(--text2)}
-.bracket-spinner{width:28px;height:28px;border:2px solid var(--s3);border-top-color:var(--orange);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
-@keyframes spin{to{transform:rotate(360deg)}}
+.bracket-msg{text-align:center;padding:40px 20px;color:var(--text2);font-size:14px}
 
-/* ═══════════════════════════ EDIT VIEW ══════════════════════ */
+/* ── EDIT VIEW ── */
+.edit-note{background:var(--orangef);border:1px solid var(--orangeb);border-radius:12px;padding:14px 16px;margin-bottom:18px;font-size:13px;color:var(--text2);line-height:1.6}
+.edit-note strong{color:var(--text)}
 .edit-slots{display:flex;flex-direction:column;gap:12px}
 .edit-card{background:var(--s1);border:1px solid var(--rim);border-radius:16px;padding:16px}
 .edit-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.edit-num{
-  width:28px;height:28px;border-radius:50%;background:var(--orangef);border:1px solid var(--orangeb);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--orange);flex-shrink:0;
-}
-.edit-name-inp{
-  flex:1;background:var(--s2);border:1px solid var(--rim2);border-radius:9px;
-  padding:10px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
-  outline:none;transition:border-color .2s;
-}
+.edit-num{width:28px;height:28px;border-radius:50%;background:var(--orangef);border:1px solid var(--orangeb);display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--orange);flex-shrink:0}
+.edit-name-inp{flex:1;background:var(--s2);border:1px solid var(--rim2);border-radius:9px;padding:10px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;outline:none;transition:border-color .2s}
 .edit-name-inp:focus{border-color:var(--orange)}
 .edit-name-inp::placeholder{color:var(--text3)}
 .picks-lbl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:9px;margin-left:2px}
-.pick-wrap{position:relative;margin-bottom:8px}
-.pick-wrap:last-child{margin-bottom:0}
-.pick-row-inner{display:flex;gap:7px;align-items:center}
+.pick-row{display:flex;gap:7px;align-items:center;margin-bottom:8px}
+.pick-row:last-child{margin-bottom:0}
 .pick-n{font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;color:var(--orange);width:16px;text-align:center;flex-shrink:0}
-.pick-inp{
-  flex:2;background:var(--s2);border:1px solid var(--rim2);border-radius:9px;
-  padding:10px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;
-  outline:none;transition:border-color .2s;
-}
+.pick-inp{background:var(--s2);border:1px solid var(--rim2);border-radius:9px;padding:10px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .2s;flex:2}
 .pick-inp:focus{border-color:var(--orange)}
 .pick-inp::placeholder{color:var(--text3)}
 .team-inp{flex:1}
-
-/* autocomplete dropdown */
-.autocomplete-list{
-  position:absolute;top:calc(100% + 4px);left:23px;right:0;z-index:200;
-  background:var(--s2);border:1px solid var(--rim2);border-radius:10px;
-  overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6);
-  display:none;
-}
-.autocomplete-list.show{display:block}
-.ac-item{
-  display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;
-  border-bottom:1px solid var(--rim);transition:background .15s;
-}
-.ac-item:last-child{border-bottom:none}
-.ac-item:active{background:var(--s3)}
-.ac-logo{width:22px;height:22px;border-radius:5px;object-fit:contain;background:var(--s3);flex-shrink:0}
-.ac-logofb{width:22px;height:22px;border-radius:5px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--text2);flex-shrink:0}
-.ac-info{flex:1;min-width:0}
-.ac-name{font-size:13px;font-weight:500;color:var(--text)}
-.ac-team{font-size:11px;color:var(--text3);margin-top:1px}
-.ac-ppg{font-size:12px;font-weight:600;color:var(--orange);flex-shrink:0}
-
 .btn{width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;transition:all .18s}
 .btn-primary{background:var(--orange);color:#0d0d0f}
 .btn-primary:active{background:var(--orange2);transform:scale(.98)}
 .btn-sec{background:transparent;border:1px solid var(--rim2);color:var(--text2);font-size:14px;letter-spacing:.5px;margin-top:8px}
 .btn-sec:active{border-color:var(--orange);color:var(--orange)}
 
-/* ═══════════════════════════ TOAST ══════════════════════════ */
-.toast{
-  position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);left:50%;
-  transform:translateX(-50%) translateY(10px);
-  background:var(--s2);border:1px solid var(--rim2);border-radius:12px;
-  padding:11px 18px;font-size:13px;font-weight:500;color:var(--text);
-  z-index:999;opacity:0;transition:all .25s;pointer-events:none;
-  white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.7);
-}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--s2);border:1px solid var(--rim2);border-radius:12px;padding:11px 18px;
+  font-size:13px;font-weight:500;color:var(--text);z-index:999;opacity:0;transition:all .25s;
+  pointer-events:none;white-space:nowrap;box-shadow:0 8px 40px rgba(0,0,0,.7)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ═══════════════════════════ EMPTY ══════════════════════════ */
+/* ── EMPTY ── */
 .empty{text-align:center;padding:52px 20px;color:var(--text2)}
 .empty .ico{font-size:44px;margin-bottom:14px}
-.empty h3{font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;letter-spacing:.5px;color:var(--text);margin-bottom:8px}
-.empty p{font-size:13px;line-height:1.65;max-width:260px;margin:0 auto;color:var(--text2)}
+.empty h3{font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:8px}
+.empty p{font-size:14px;line-height:1.65;max-width:260px;margin:0 auto}
+
+/* ── SECTION LABEL ── */
+.slbl{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px;padding-left:2px}
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
   <div class="tb-logo">MARCH <em>MADNESS</em></div>
   <div class="tb-right">
@@ -327,10 +189,9 @@ body::before{
   </div>
 </div>
 
-<!-- SCROLL WRAPPER -->
 <div class="page-wrap">
 
-  <!-- ①  LEADERBOARD -->
+  <!-- LEADERBOARD -->
   <div class="view on" id="v-lb">
     <div class="inner">
       <div class="stat-strip" id="statStrip"></div>
@@ -339,7 +200,7 @@ body::before{
     </div>
   </div>
 
-  <!-- ②  TEAMS -->
+  <!-- TEAMS -->
   <div class="view" id="v-teams">
     <div class="inner">
       <div class="slbl">All Teams &amp; Players</div>
@@ -347,20 +208,23 @@ body::before{
     </div>
   </div>
 
-  <!-- ③  BRACKET -->
+  <!-- BRACKET -->
   <div class="view" id="v-bracket">
     <div class="inner">
       <div class="slbl">Tournament Bracket</div>
-      <p class="bracket-hint">Scroll sideways to see all rounds →</p>
-      <div class="bracket-outer">
-        <div id="bracketWrap"></div>
-      </div>
+      <p class="bracket-hint">Scroll sideways →</p>
+      <div class="bracket-outer"><div id="bracketWrap"></div></div>
     </div>
   </div>
 
-  <!-- ④  EDIT -->
+  <!-- EDIT -->
   <div class="view" id="v-edit">
     <div class="inner">
+      <div class="edit-note">
+        <strong>Enter each person's name and their 5 players.</strong><br/>
+        Type the player's name exactly as ESPN shows it, and their team name.
+        Points will populate automatically once tournament games are played.
+      </div>
       <div class="edit-slots" id="editSlots"></div>
       <div style="margin-top:16px">
         <button class="btn btn-primary" onclick="saveDraft()">Save Draft</button>
@@ -371,7 +235,6 @@ body::before{
 
 </div>
 
-<!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bni on" onclick="goTab('lb',this)">
     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -394,9 +257,14 @@ body::before{
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// TEAM ABBR → ESPN LOGO (2026 tournament teams)
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// CONSTANTS & STATE
+// ═══════════════════════════════════════════
+const STORE = 'mm_2026';
+const ROUND_KEYS  = ['r1a','r1b','r16','r8','r4','champ'];
+const ROUND_NAMES = ['R1 Gm1','R1 Gm2','Sweet 16','Elite 8','Final Four','Champ'];
+const PROXY = 'https://corsproxy.io/?';
+
 const ABBR = {
   'duke':'DUKE','arizona':'ARIZ','michigan':'MICH','florida':'FLA',
   'houston':'HOU','purdue':'PUR','uconn':'CONN','iowa state':'ISU',
@@ -404,206 +272,231 @@ const ABBR = {
   'nebraska':'NEB','kansas':'KAN','arkansas':'ARK','alabama':'ALA',
   'wisconsin':'WIS','vanderbilt':'VAN',"st. john's":'SJU','texas tech':'TTU',
   'louisville':'LOU','south florida':'USF','north carolina':'UNC','byu':'BYU',
-  'tennessee':'TENN',"saint mary's":'SMC','miami (fla.)':'MIA','ucla':'UCLA',
-  'kentucky':'UK','ohio state':'OSU','georgia':'UGA','villanova':'NOVA',
-  'clemson':'CLEM','tcu':'TCU','saint louis':'SLU','utah state':'USU',
-  'iowa':'IOWA','texas a&m':'TXAM','santa clara':'SCU','ucf':'UCF',
-  'missouri':'MIZ','vcu':'VCU','texas':'TEX','nc state':'NCST',
-  'miami (ohio)':'MIOH','smu':'SMU','northern iowa':'UNI','high point':'HPU',
-  'mcneese':'MCNS','akron':'AKR','cal baptist':'CBU','troy':'TROY',
-  'hawaii':'HAW','hofstra':'HOF','north dakota state':'NDSU','penn':'PENN',
-  'wright state':'WRST','kennesaw state':'KENN','furman':'FUR','queens':'QUNCC',
-  'tennessee state':'TNST','idaho':'IDHO','siena':'SIE',
-  'long island university':'LIU','umbc':'UMBC','howard':'HOW',
+  'tennessee':'TENN',"saint mary's":'SMC','miami (fla.)':'MIA','miami fl':'MIA',
+  'ucla':'UCLA','kentucky':'UK','ohio state':'OSU','georgia':'UGA',
+  'villanova':'NOVA','clemson':'CLEM','tcu':'TCU','saint louis':'SLU',
+  'utah state':'USU','iowa':'IOWA','texas a&m':'TXAM','santa clara':'SCU',
+  'ucf':'UCF','missouri':'MIZ','vcu':'VCU','texas':'TEX','nc state':'NCST',
+  'miami (ohio)':'MIOH','miami ohio':'MIOH','smu':'SMU','northern iowa':'UNI',
+  'high point':'HPU','mcneese':'MCNS','akron':'AKR','cal baptist':'CBU',
+  'troy':'TROY','hawaii':'HAW','hofstra':'HOF','north dakota state':'NDSU',
+  'penn':'PENN','wright state':'WRST','kennesaw state':'KENN','furman':'FUR',
+  'queens':'QUNCC','tennessee state':'TNST','idaho':'IDHO','siena':'SIE',
+  'long island university':'LIU','liu':'LIU','umbc':'UMBC','howard':'HOW',
   'lehigh':'LEH','prairie view a&m':'PVAM',
 };
 
-function teamLogoUrl(name){
-  if(!name) return null;
-  const a = ABBR[name.toLowerCase().trim()];
+function logoUrl(team) {
+  if (!team) return null;
+  const a = ABBR[team.toLowerCase().trim()];
   return a ? `https://a.espncdn.com/i/teamlogos/ncaa/500/${a}.png` : null;
 }
-
-function logoImg(name, size='sm'){
-  const url=teamLogoUrl(name);
-  const sm=size==='sm';
-  const cls=sm?'pr-logo':'team-hdr-logo';
-  const fbCls=sm?'pr-logofb':'team-hdr-logofb';
-  const px=sm?26:36;
-  const abbr=name?name.slice(0,3).toUpperCase():'?';
-  if(url) return `<img class="${cls}" src="${url}" width="${px}" height="${px}" alt="" onerror="this.outerHTML='<div class=\\'${fbCls}\\'>${abbr}</div>'" loading="lazy"/>`;
-  return `<div class="${fbCls}">${abbr}</div>`;
+function logoImg(team, size) {
+  const url = logoUrl(team);
+  const px = size === 'lg' ? 36 : 26;
+  const cls = size === 'lg' ? 'b-tlogo' : 'pr-logo';
+  const fb  = size === 'lg' ? 'b-tlogofb' : 'pr-logofb';
+  const abbr = team ? team.slice(0,3).toUpperCase() : '?';
+  if (url) return `<img class="${cls}" src="${url}" width="${px}" height="${px}" alt=""
+    onerror="this.outerHTML='<div class=\\'${fb}\\'>${abbr}</div>'" loading="lazy"/>`;
+  return `<div class="${fb}">${abbr}</div>`;
 }
 
-function acLogoImg(name){
-  const url=teamLogoUrl(name);
-  const abbr=name?name.slice(0,3).toUpperCase():'?';
-  if(url) return `<img class="ac-logo" src="${url}" width="22" height="22" alt="" onerror="this.outerHTML='<div class=\\'ac-logofb\\'>${abbr}</div>'" loading="lazy"/>`;
-  return `<div class="ac-logofb">${abbr}</div>`;
+let draft = loadDraft();
+let openCard = null;
+let bracketData = null;
+
+function defDraft() {
+  return Array.from({length:7}, () => ({
+    name: '',
+    picks: Array.from({length:5}, () => ({player:'', team:'', pts:{}, eliminated:false}))
+  }));
+}
+function loadDraft() {
+  try { return JSON.parse(localStorage.getItem(STORE)) || defDraft(); }
+  catch { return defDraft(); }
+}
+function saveDraftLocal() { localStorage.setItem(STORE, JSON.stringify(draft)); }
+
+// ═══════════════════════════════════════════
+// ESPN FETCH — with timeout
+// ═══════════════════════════════════════════
+async function espnFetch(url) {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const r = await fetch(PROXY + encodeURIComponent(url), {signal: ctrl.signal});
+    clearTimeout(timer);
+    return r.ok ? r.json() : null;
+  } catch { return null; }
 }
 
-// ═══════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════
-const KEY='mm_v4';
-const RKEYS=['r1a','r1b','r16','r8','r4','champ'];
-const RLBLS=['R1 Gm1','R1 Gm2','Sweet 16','Elite 8','Final Four','Champ'];
-
-let draft=loadDraft(), openCard=null, bracketData=null;
-
-function defDraft(){return Array.from({length:7},()=>({name:'',picks:Array.from({length:5},()=>({player:'',team:'',pts:{},eliminated:false}))}))}
-function loadDraft(){try{return JSON.parse(localStorage.getItem(KEY))||defDraft()}catch{return defDraft()}}
-function saveDraftLocal(){localStorage.setItem(KEY,JSON.stringify(draft))}
-
-// ═══════════════════════════════════════════════
-// ESPN
-// ═══════════════════════════════════════════════
-const PROXY='https://corsproxy.io/?';
-async function espn(url){
-  try{
-    const ctrl=new AbortController();
-    const t=setTimeout(()=>ctrl.abort(),8000);
-    const r=await fetch(PROXY+encodeURIComponent(url),{signal:ctrl.signal});
-    clearTimeout(t);
-    return r.ok?r.json():null;
-  }catch{return null}
-}
-
-function roundKey(game){
-  const t=((game.notes||[]).map(n=>n.headline||'').join(' ')+' '+(game.name||'')).toLowerCase();
-  if(t.includes('first round')||t.includes('round of 64'))return 'r1a';
-  if(t.includes('second round')||t.includes('round of 32'))return 'r1b';
-  if(t.includes('sweet'))return 'r16';
-  if(t.includes('elite'))return 'r8';
-  if(t.includes('final four')||t.includes('semifinal'))return 'r4';
-  if(t.includes('champion'))return 'champ';
+function roundKey(game) {
+  const t = ((game.notes||[]).map(n=>n.headline||'').join(' ') + ' ' + (game.name||'')).toLowerCase();
+  if (t.includes('first round') || t.includes('round of 64'))  return 'r1a';
+  if (t.includes('second round')|| t.includes('round of 32'))  return 'r1b';
+  if (t.includes('sweet'))   return 'r16';
+  if (t.includes('elite'))   return 'r8';
+  if (t.includes('final four') || t.includes('semifinal'))     return 'r4';
+  if (t.includes('champion')) return 'champ';
   return 'r1a';
 }
 
-async function refresh(){
-  document.getElementById('updTxt').textContent='Updating…';
+// ═══════════════════════════════════════════
+// REFRESH — renders immediately, fetches in bg
+// ═══════════════════════════════════════════
+async function refresh() {
+  document.getElementById('updTxt').textContent = 'Updating…';
+  renderAll(); // show local data immediately
 
-  // Render immediately from local data so page is never frozen
-  renderAll();
+  try {
+    const sb = await espnFetch(
+      'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&limit=200'
+    );
+    if (!sb) { document.getElementById('updTxt').textContent = 'Offline'; return; }
 
-  try{
-    const sb=await espn('https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&limit=200');
-    if(!sb){ document.getElementById('updTxt').textContent='Offline'; return; }
+    const events = sb.events || [];
+    bracketData = events;
+    renderBracket();
 
-    const events=sb?.events||[];
-    bracketData=events;
-    renderBracket(); // update bracket immediately with scoreboard data
+    const completed = events.filter(e => e.status?.type?.completed);
 
-    const completed=events.filter(e=>e.status?.type?.completed);
-
-    // Build eliminations from scoreboard (no extra calls needed)
-    const elim=new Set();
-    for(const g of completed){
-      for(const c of g.competitions||[]){
-        const teams=c.competitors||[];
-        if(teams.length<2)continue;
-        const scores=teams.map(t=>+(t.score||0));
-        const mx=Math.max(...scores);
-        for(const t of teams)if(+(t.score||0)<mx)elim.add((t.team?.displayName||'').toLowerCase());
+    // Eliminations from scoreboard data — no extra calls needed
+    const elim = new Set();
+    for (const g of completed) {
+      for (const c of g.competitions||[]) {
+        const teams = c.competitors||[];
+        if (teams.length < 2) continue;
+        const scores = teams.map(t => +(t.score||0));
+        const max = Math.max(...scores);
+        for (const t of teams)
+          if (+(t.score||0) < max) elim.add((t.team?.displayName||'').toLowerCase());
       }
     }
 
-    // Fetch box scores in parallel (max 6 at a time to avoid hammering proxy)
-    const pts={};
-    const chunks=[];
-    for(let i=0;i<completed.length;i+=6) chunks.push(completed.slice(i,i+6));
-
-    for(const chunk of chunks){
-      await Promise.all(chunk.map(async g=>{
-        const rk=roundKey(g);
-        const box=await espn(`https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/${g.id}/boxscore`);
-        for(const td of box?.players||[]){
-          for(const cat of td.statistics||[]){
-            const pi=(cat.labels||[]).indexOf('PTS');
-            for(const a of cat.athletes||[]){
-              const nm=(a.athlete?.displayName||'').toLowerCase();
-              if(!nm)continue;
-              const p=pi>=0?+(a.stats?.[pi]||0):0;
-              if(!pts[nm])pts[nm]={};
-              pts[nm][rk]=(pts[nm][rk]||0)+p;
+    // Fetch box scores in parallel batches of 6
+    const pts = {};
+    for (let i = 0; i < completed.length; i += 6) {
+      await Promise.all(completed.slice(i, i+6).map(async g => {
+        const rk = roundKey(g);
+        const box = await espnFetch(
+          `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/${g.id}/boxscore`
+        );
+        for (const td of box?.players||[]) {
+          for (const cat of td.statistics||[]) {
+            const pi = (cat.labels||[]).indexOf('PTS');
+            for (const a of cat.athletes||[]) {
+              const nm = (a.athlete?.displayName||'').toLowerCase();
+              if (!nm) continue;
+              const p = pi >= 0 ? +(a.stats?.[pi]||0) : 0;
+              if (!pts[nm]) pts[nm] = {};
+              pts[nm][rk] = (pts[nm][rk]||0) + p;
             }
           }
         }
       }));
     }
 
-    let changed=false;
-    for(const dr of draft){
-      for(const p of dr.picks){
-        if(!p.player)continue;
-        const k=p.player.toLowerCase();
-        const np=pts[k]||{},ne=elim.has(p.team.toLowerCase());
-        if(JSON.stringify(p.pts)!==JSON.stringify(np)||p.eliminated!==ne){p.pts=np;p.eliminated=ne;changed=true}
+    // Update draft with new points + eliminations
+    let changed = false;
+    for (const dr of draft) {
+      for (const p of dr.picks) {
+        if (!p.player) continue;
+        const key = p.player.toLowerCase();
+        const np = pts[key] || {};
+        const ne = elim.has(p.team.toLowerCase());
+        if (JSON.stringify(p.pts) !== JSON.stringify(np) || p.eliminated !== ne) {
+          p.pts = np; p.eliminated = ne; changed = true;
+        }
       }
     }
-    if(changed){ saveDraftLocal(); renderAll(); }
+    if (changed) { saveDraftLocal(); renderAll(); }
 
-    document.getElementById('updTxt').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  }catch(e){
-    document.getElementById('updTxt').textContent='Retry…';
-    console.warn('Refresh error:',e);
+    document.getElementById('updTxt').textContent =
+      new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  } catch(e) {
+    document.getElementById('updTxt').textContent = 'Retry…';
+    console.warn('Refresh error:', e);
   }
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // SCORING
-// ═══════════════════════════════════════════════
-const pickPts=p=>Object.values(p.pts||{}).reduce((a,b)=>a+b,0);
-const dTotal=d=>d.picks.reduce((s,p)=>s+pickPts(p),0);
+// ═══════════════════════════════════════════
+const pickPts  = p  => Object.values(p.pts||{}).reduce((a,b) => a+b, 0);
+const draftTot = dr => dr.picks.reduce((s,p) => s + pickPts(p), 0);
 
-// ═══════════════════════════════════════════════
-// RENDER ALL
-// ═══════════════════════════════════════════════
-function renderAll(){
-  renderStats();renderBoard();renderTeams();renderBracket();
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function renderAll() {
+  renderStats();
+  renderBoard();
+  renderTeams();
+  renderBracket();
 }
 
-function renderStats(){
-  const all=draft.flatMap(d=>d.picks).filter(p=>p.player);
-  const alive=all.filter(p=>!p.eliminated).length;
-  const out=all.filter(p=>p.eliminated).length;
-  const top=Math.max(0,...draft.map(dTotal));
-  const named=draft.filter(d=>d.name).length;
-  document.getElementById('statStrip').innerHTML=`
+function renderStats() {
+  const all   = draft.flatMap(d => d.picks).filter(p => p.player);
+  const alive = all.filter(p => !p.eliminated).length;
+  const out   = all.filter(p => p.eliminated).length;
+  const top   = Math.max(0, ...draft.map(draftTot));
+  const named = draft.filter(d => d.name).length;
+  document.getElementById('statStrip').innerHTML = `
     <div class="stat-box"><div class="v">${alive}</div><div class="l">Alive</div></div>
     <div class="stat-box"><div class="v">${out}</div><div class="l">Out</div></div>
     <div class="stat-box"><div class="v">${top}</div><div class="l">Leader</div></div>
     <div class="stat-box"><div class="v">${named}</div><div class="l">Teams</div></div>`;
 }
 
-function renderBoard(){
-  const sorted=[...draft].sort((a,b)=>dTotal(b)-dTotal(a));
-  const el=document.getElementById('lbStack');
-  if(!sorted.some(d=>d.name)){
-    el.innerHTML=`<div class="empty"><div class="ico">🏀</div><h3>No Draft Yet</h3><p>Tap Edit to enter your league's picks.</p></div>`;return;
+function renderBoard() {
+  const sorted = [...draft].sort((a,b) => draftTot(b) - draftTot(a));
+  const el = document.getElementById('lbStack');
+
+  if (!sorted.some(d => d.name)) {
+    el.innerHTML = `<div class="empty">
+      <div class="ico">🏀</div>
+      <h3>No Draft Yet</h3>
+      <p>Tap <strong>Edit</strong> to enter your picks.</p>
+    </div>`;
+    return;
   }
-  el.innerHTML=sorted.map((dr,i)=>{
-    if(!dr.name)return'';
-    const rank=i+1,tot=dTotal(dr);
-    const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rn';
-    const alive=dr.picks.filter(p=>p.player&&!p.eliminated).length;
-    const isOpen=openCard===dr.name;
-    const rows=dr.picks.map(p=>{
-      if(!p.player)return'';
-      const pts=pickPts(p);
-      const dotCls=p.eliminated?'out':pts>0?'alive':'idle';
-      return`<div class="pr ${p.eliminated?'elim':''}">
-        ${logoImg(p.team,'sm')}
-        <div class="pr-info"><div class="pr-name">${p.player}</div><div class="pr-team">${p.team||'—'}</div></div>
-        <div class="pr-dot ${dotCls}"></div>
-        <div class="pr-pts">${pts||'—'}</div>
+
+  el.innerHTML = sorted.map((dr, i) => {
+    if (!dr.name) return '';
+    const rank = i + 1;
+    const tot  = draftTot(dr);
+    const rc   = rank===1?'r1':rank===2?'r2':rank===3?'r3':'rn';
+    const alive = dr.picks.filter(p => p.player && !p.eliminated).length;
+    const isOpen = openCard === dr.name;
+
+    const rows = dr.picks.map(p => {
+      if (!p.player) return '';
+      const pts = pickPts(p);
+      const dot = p.eliminated ? 'out' : pts > 0 ? 'alive' : 'idle';
+      return `<div class="pr ${p.eliminated?'elim':''}">
+        ${logoImg(p.team)}
+        <div class="pr-info">
+          <div class="pr-name">${p.player}</div>
+          <div class="pr-team">${p.team||'—'}</div>
+        </div>
+        <div class="pr-dot ${dot}"></div>
+        <div class="pr-pts">${pts || '—'}</div>
       </div>`;
     }).join('');
-    return`<div class="lb-card ${rc} ${isOpen?'open':''}" style="animation-delay:${i*.05}s" onclick="toggleCard('${dr.name.replace(/'/g,"\\'")}')">
+
+    return `<div class="lb-card ${rc} ${isOpen?'open':''}" style="animation-delay:${i*.05}s"
+        onclick="toggleCard('${dr.name.replace(/'/g,"\\'")}')">
       <div class="lb-head">
         <div class="lb-rank">${rank}</div>
-        <div class="lb-info"><div class="lb-name">${dr.name}</div><div class="lb-sub">${alive} alive · tap for players</div></div>
-        <div class="lb-score"><div class="lb-pts">${tot}</div><div class="lb-ptslbl">PTS</div></div>
+        <div class="lb-info">
+          <div class="lb-name">${dr.name}</div>
+          <div class="lb-sub">${alive} alive · tap for players</div>
+        </div>
+        <div class="lb-score">
+          <div class="lb-pts">${tot}</div>
+          <div class="lb-ptslbl">PTS</div>
+        </div>
         <svg class="lb-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="lb-panel"><div class="lb-panel-inner">${rows}</div></div>
@@ -611,304 +504,182 @@ function renderBoard(){
   }).join('');
 }
 
-window.toggleCard=function(name){
-  openCard=openCard===name?null:name;
+window.toggleCard = function(name) {
+  openCard = openCard === name ? null : name;
   renderBoard();
-  if(openCard)setTimeout(()=>{const e=document.querySelector('.lb-card.open');if(e)e.scrollIntoView({behavior:'smooth',block:'nearest'})},80);
-}
+  if (openCard) setTimeout(() => {
+    const e = document.querySelector('.lb-card.open');
+    if (e) e.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 80);
+};
 
-function renderTeams(){
-  const sorted=[...draft].sort((a,b)=>dTotal(b)-dTotal(a));
-  document.getElementById('teamsStack').innerHTML=sorted.filter(d=>d.name).map(dr=>{
-    const tot=dTotal(dr);
-    // find most common team for header logo
-    const teamCounts={};
-    dr.picks.forEach(p=>{if(p.team){teamCounts[p.team]=(teamCounts[p.team]||0)+1}});
-    const mainTeam=Object.entries(teamCounts).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
-    const rows=dr.picks.map(p=>{
-      if(!p.player)return'';
-      const pts=pickPts(p);
-      const dotCls=p.eliminated?'out':pts>0?'alive':'idle';
-      return`<div class="pr ${p.eliminated?'elim':''}">
-        ${logoImg(p.team,'sm')}
-        <div class="pr-info"><div class="pr-name">${p.player}</div><div class="pr-team">${p.team||'—'}</div></div>
-        <div class="pr-dot ${dotCls}"></div>
-        <div class="pr-pts">${pts||'—'}</div>
+function renderTeams() {
+  const sorted = [...draft].sort((a,b) => draftTot(b) - draftTot(a));
+  document.getElementById('teamsStack').innerHTML = sorted.filter(d => d.name).map(dr => {
+    const rows = dr.picks.map(p => {
+      if (!p.player) return '';
+      const pts = pickPts(p);
+      const dot = p.eliminated ? 'out' : pts > 0 ? 'alive' : 'idle';
+      return `<div class="pr ${p.eliminated?'elim':''}">
+        ${logoImg(p.team)}
+        <div class="pr-info">
+          <div class="pr-name">${p.player}</div>
+          <div class="pr-team">${p.team||'—'}</div>
+        </div>
+        <div class="pr-dot ${dot}"></div>
+        <div class="pr-pts">${pts || '—'}</div>
       </div>`;
     }).join('');
-    return`<div class="team-card">
+    return `<div class="team-card">
       <div class="team-hdr">
-        <div class="team-hdr-info"><div class="team-owner">${dr.name}</div></div>
-        <div class="team-total">${tot}</div>
+        <div class="team-owner">${dr.name}</div>
+        <div class="team-total">${draftTot(dr)}</div>
       </div>
-      <div class="team-players">${rows||'<div style="color:var(--text3);font-size:13px">No picks yet</div>'}</div>
+      <div class="team-players">${rows || '<div style="color:var(--text3);font-size:13px;padding:4px 0">No picks yet</div>'}</div>
     </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════════
-// BRACKET
-// ═══════════════════════════════════════════════
-function renderBracket(){
-  const wrap=document.getElementById('bracketWrap');
-  if(!bracketData){
-    wrap.innerHTML=`<div class="bracket-loading"><div class="bracket-spinner"></div><p style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text3)">Loading bracket…</p></div>`;
-    return;
-  }
-  if(!bracketData.length){
-    wrap.innerHTML=`<div class="empty"><div class="ico">🏆</div><h3>Not Started</h3><p>The bracket will appear once the tournament begins.</p></div>`;
+function renderBracket() {
+  const wrap = document.getElementById('bracketWrap');
+  if (!bracketData || !bracketData.length) {
+    wrap.innerHTML = `<div class="bracket-msg">Bracket will appear once tournament begins.</div>`;
     return;
   }
 
-  // group games by round label
-  const roundOrder=['r1a','r1b','r16','r8','r4','champ'];
-  const roundLabels={'r1a':'Round of 64','r1b':'Round of 32','r16':'Sweet 16','r8':'Elite 8','r4':'Final Four','champ':'Championship'};
-  const byRound={};
-  for(const g of bracketData){
-    const rk=roundKey(g);
-    if(!byRound[rk])byRound[rk]=[];
+  const ORDER = ['r1a','r1b','r16','r8','r4','champ'];
+  const LABELS = {'r1a':'Round of 64','r1b':'Round of 32','r16':'Sweet 16','r8':'Elite 8','r4':'Final Four','champ':'Championship'};
+  const byRound = {};
+  for (const g of bracketData) {
+    const rk = roundKey(g);
+    if (!byRound[rk]) byRound[rk] = [];
     byRound[rk].push(g);
   }
 
-  const rounds=roundOrder.filter(r=>byRound[r]&&byRound[r].length);
-  if(!rounds.length){
-    wrap.innerHTML=`<div class="empty"><div class="ico">🏆</div><h3>No Games Yet</h3><p>Check back once the tournament starts.</p></div>`;
+  const rounds = ORDER.filter(r => byRound[r]?.length);
+  if (!rounds.length) {
+    wrap.innerHTML = `<div class="bracket-msg">No games found yet.</div>`;
     return;
   }
 
-  const html=`<div class="bracket">${rounds.map(rk=>{
-    const games=byRound[rk];
-    const gameCards=games.map(g=>{
-      const comps=(g.competitions||[])[0];
-      const teams=comps?.competitors||[];
-      const isLive=g.status?.type?.state==='in';
-      const isDone=g.status?.type?.completed;
-      const statusTxt=isLive?`${g.status?.displayClock||''} ${g.status?.period?'Q'+g.status.period:''}`.trim():'';
+  wrap.innerHTML = `<div class="bracket">${rounds.map(rk => {
+    const games = byRound[rk];
+    const cards = games.map(g => {
+      const comp  = (g.competitions||[])[0];
+      const teams = comp?.competitors||[];
+      const live  = g.status?.type?.state === 'in';
+      const done  = g.status?.type?.completed;
 
-      const teamRows=teams.map(t=>{
-        const won=t.winner===true;
-        const lost=isDone&&t.winner===false;
-        const seed=t.curatedRank?.current||t.team?.seed||'';
-        const name=t.team?.shortDisplayName||t.team?.displayName||'TBD';
-        const score=isDone||isLive?t.score:'';
-        const abbr=(t.team?.abbreviation||name.slice(0,3)).toUpperCase();
-        const logoUrl=t.team?.logos?.[0]?.href||null;
-        const logoEl=logoUrl
-          ?`<img class="b-tlogo" src="${logoUrl}" width="18" height="18" alt="" onerror="this.outerHTML='<div class=\\'b-tlogofb\\'>${abbr}</div>'" loading="lazy"/>`
-          :`<div class="b-tlogofb">${abbr}</div>`;
-        return`<div class="b-team ${won?'winner':lost?'loser':''}">
-          <span class="b-seed">${seed}</span>
-          ${logoEl}
+      const teamRows = teams.map(t => {
+        const won  = t.winner === true;
+        const lost = done && t.winner === false;
+        const seed = t.curatedRank?.current || t.team?.seed || '';
+        const name = t.team?.shortDisplayName || t.team?.displayName || 'TBD';
+        const score= (done || live) ? t.score : '';
+        const abbr = (t.team?.abbreviation || name.slice(0,3)).toUpperCase();
+        const lurl = t.team?.logos?.[0]?.href || null;
+        const limg = lurl
+          ? `<img class="b-tlogo" src="${lurl}" width="18" height="18" alt=""
+               onerror="this.outerHTML='<div class=\\'b-tlogofb\\'>${abbr}</div>'" loading="lazy"/>`
+          : `<div class="b-tlogofb">${abbr}</div>`;
+        return `<div class="b-team ${won?'winner':lost?'loser':''}">
+          <span class="b-seed">${seed}</span>${limg}
           <span class="b-tname">${name}</span>
           <span class="b-score">${score}</span>
         </div>`;
       }).join('');
 
-      return`<div class="b-game ${isLive?'live':''}">
+      return `<div class="b-game ${live?'live':''}">
         ${teamRows}
-        ${isLive?`<div class="b-status">${statusTxt||'LIVE'}</div>`:''}
+        ${live ? `<div class="b-status">${g.status?.displayClock||''} LIVE</div>` : ''}
       </div>`;
     }).join('');
 
-    return`<div class="b-round">
-      <div class="b-round-lbl">${roundLabels[rk]}</div>
-      <div class="b-games">${gameCards}</div>
+    return `<div class="b-round">
+      <div class="b-round-lbl">${LABELS[rk]}</div>
+      <div class="b-games">${cards}</div>
     </div>`;
   }).join('')}</div>`;
-
-  wrap.innerHTML=html;
 }
 
-// ═══════════════════════════════════════════════
-// EDIT + AUTOCOMPLETE
-// ═══════════════════════════════════════════════
-let _d=[]; // mutable edit state
+// ═══════════════════════════════════════════
+// EDIT
+// ═══════════════════════════════════════════
+let _d = [];
 
-function buildEdit(){
-  _d=draft.map(dr=>({name:dr.name,picks:dr.picks.map(p=>({...p}))}));
+function buildEdit() {
+  _d = draft.map(dr => ({
+    name: dr.name,
+    picks: dr.picks.map(p => ({...p}))
+  }));
 
-  document.getElementById('editSlots').innerHTML=_d.map((dr,di)=>`
+  document.getElementById('editSlots').innerHTML = _d.map((dr, di) => `
     <div class="edit-card">
       <div class="edit-card-hdr">
         <div class="edit-num">${di+1}</div>
         <input class="edit-name-inp" type="text" placeholder="Friend's name"
           value="${dr.name}" oninput="_d[${di}].name=this.value"/>
       </div>
-      <div class="picks-lbl">Picks — Player / Team</div>
-      ${dr.picks.map((p,pi)=>`
-        <div class="pick-wrap" id="pw-${di}-${pi}">
-          <div class="pick-row-inner">
-            <span class="pick-n">${pi+1}</span>
-            <input class="pick-inp" type="text" placeholder="Player name"
-              value="${p.player}" autocomplete="off"
-              oninput="onPlayerInput(this,${di},${pi})"
-              onblur="setTimeout(()=>closeAC(${di},${pi}),200)"/>
-            <input class="pick-inp team-inp" type="text" placeholder="Team"
-              value="${p.team}" id="tinp-${di}-${pi}"
-              oninput="_d[${di}].picks[${pi}].team=this.value"/>
-          </div>
-          <div class="autocomplete-list" id="ac-${di}-${pi}"></div>
+      <div class="picks-lbl">Player Name &amp; Team</div>
+      ${dr.picks.map((p, pi) => `
+        <div class="pick-row">
+          <span class="pick-n">${pi+1}</span>
+          <input class="pick-inp" type="text" placeholder="Player name"
+            value="${p.player}" oninput="_d[${di}].picks[${pi}].player=this.value"/>
+          <input class="pick-inp team-inp" type="text" placeholder="Team"
+            value="${p.team}" oninput="_d[${di}].picks[${pi}].team=this.value"/>
         </div>`).join('')}
     </div>`).join('');
 }
 
-// Debounce timers per input slot
-// ── ROSTER CACHE ─────────────────────────────────────────────
-// ESPN team IDs for all 68 2026 tournament teams
-const TEAM_IDS = {
-  'Duke':150,'Arizona':12,'Michigan':130,'Florida':57,
-  'Houston':248,'Purdue':2509,'UConn':41,'Iowa State':66,
-  'Michigan State':127,'Illinois':356,'Gonzaga':2250,'Virginia':258,
-  'Nebraska':158,'Kansas':2305,'Arkansas':8,'Alabama':333,
-  'Wisconsin':275,'Vanderbilt':238,"St. John's":2599,'Texas Tech':2641,
-  'Louisville':97,'South Florida':58,'North Carolina':153,'BYU':252,
-  'Tennessee':2633,"Saint Mary's":2608,'Miami (Fla.)':2390,'UCLA':26,
-  'Kentucky':96,'Ohio State':194,'Georgia':61,'Villanova':222,
-  'Clemson':228,'TCU':2628,'Saint Louis':139,'Utah State':328,
-  'Iowa':2294,'Texas A&M':245,'Santa Clara':2608,'UCF':2116,
-  'Missouri':142,'VCU':2670,'Texas':251,'NC State':152,
-  'Miami (Ohio)':193,'SMU':2567,'Northern Iowa':2272,'High Point':2731,
-  'McNeese':2383,'Akron':2006,'Cal Baptist':2856,'Troy':2653,
-  'Hawaii':2229,'Hofstra':2234,'North Dakota State':2449,'Penn':219,
-  'Wright State':2737,'Kennesaw State':338,'Furman':231,'Queens':2797,
-  'Tennessee State':2393,'Idaho':70,'Siena':2561,'Long Island University':2363,
-  'UMBC':2378,'Howard':47,'Lehigh':2350,'Prairie View A&M':2440,
-};
-
-let rosterCache = {}; // { playerNameLower: { name, team } }
-let rosterLoaded = false;
-let rosterLoading = false;
-
-async function loadRosters() {
-  if (rosterLoaded || rosterLoading) return;
-  rosterLoading = true;
-  const ids = Object.entries(TEAM_IDS);
-  // Fetch in batches of 8
-  for (let i = 0; i < ids.length; i += 8) {
-    const batch = ids.slice(i, i + 8);
-    await Promise.all(batch.map(async ([teamName, teamId]) => {
-      try {
-        const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${teamId}/roster`;
-        const res = await fetch(PROXY + encodeURIComponent(url));
-        if (!res.ok) return;
-        const data = await res.json();
-        const athletes = data?.athletes || [];
-        for (const group of athletes) {
-          const items = group?.items || (Array.isArray(group) ? group : [group]);
-          for (const a of items) {
-            const name = a?.displayName || a?.fullName || a?.name;
-            if (!name) continue;
-            rosterCache[name.toLowerCase()] = { name, team: teamName };
-          }
-        }
-      } catch(e) { /* skip failed team */ }
-    }));
-  }
-  rosterLoaded = true;
-  rosterLoading = false;
-}
-
-// Kick off roster load in background immediately
-loadRosters();
-
-// ── AUTOCOMPLETE ─────────────────────────────────────────────
-const _acTimers = {};
-
-function onPlayerInput(inp,di,pi){
-  const q = inp.value.trim().toLowerCase();
-  _d[di].picks[pi].player = inp.value.trim();
-  const acEl = document.getElementById(`ac-${di}-${pi}`);
-  if(!q || q.length < 2){ acEl.classList.remove('show'); acEl.innerHTML=''; return; }
-
-  clearTimeout(_acTimers[`${di}-${pi}`]);
-  _acTimers[`${di}-${pi}`] = setTimeout(() => {
-    // Search the cached roster
-    const matches = Object.values(rosterCache)
-      .filter(p => p.name.toLowerCase().includes(q))
-      .slice(0, 6);
-
-    if (!matches.length) {
-      if (!rosterLoaded) {
-        acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;justify-content:center">Loading rosters… try again shortly</div>`;
-      } else {
-        acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;justify-content:center">No match — check spelling or type manually</div>`;
-      }
-      acEl.classList.add('show');
-      return;
-    }
-
-    acEl.innerHTML = matches.map(p => {
-      const safeN = p.name.replace(/'/g,"\'");
-      const safeT = p.team.replace(/'/g,"\'");
-      return `<div class="ac-item" onmousedown="selectPlayer(${di},${pi},'${safeN}','${safeT}')">
-        ${acLogoImg(p.team)}
-        <div class="ac-info">
-          <div class="ac-name">${p.name}</div>
-          <div class="ac-team">${p.team}</div>
-        </div>
-      </div>`;
-    }).join('');
-    acEl.classList.add('show');
-  }, 200);
-}
-
-window.selectPlayer=function(di,pi,name,team){
-  _d[di].picks[pi].player=name;
-  _d[di].picks[pi].team=team;
-  // update inputs
-  const pw=document.getElementById(`pw-${di}-${pi}`);
-  pw.querySelector('.pick-inp').value=name;
-  document.getElementById(`tinp-${di}-${pi}`).value=team;
-  closeAC(di,pi);
-}
-
-window.closeAC=function(di,pi){
-  const el=document.getElementById(`ac-${di}-${pi}`);
-  if(el){el.classList.remove('show');el.innerHTML=''}
-}
-
-window.saveDraft=function(){
-  draft=_d.map(dr=>({name:dr.name,picks:dr.picks.map(p=>({player:p.player||'',team:p.team||'',pts:p.pts||{},eliminated:p.eliminated||false}))}));
+window.saveDraft = function() {
+  draft = _d.map(dr => ({
+    name: dr.name,
+    picks: dr.picks.map(p => ({
+      player: p.player||'', team: p.team||'',
+      pts: p.pts||{}, eliminated: p.eliminated||false
+    }))
+  }));
   saveDraftLocal();
-  toast('✓ Saved — refreshing stats');
+  toast('✓ Saved — stats will update automatically');
   renderAll();
   refresh();
-}
+};
 
-window.clearDraft=function(){
-  if(!confirm('Clear all picks?'))return;
-  draft=defDraft();saveDraftLocal();buildEdit();renderAll();
-}
+window.clearDraft = function() {
+  if (!confirm('Clear all picks?')) return;
+  draft = defDraft();
+  saveDraftLocal();
+  buildEdit();
+  renderAll();
+};
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // NAV
-// ═══════════════════════════════════════════════
-window.goTab=function(name,btn){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.querySelectorAll('.bni').forEach(b=>b.classList.remove('on'));
-  document.getElementById('v-'+name).classList.add('on');
+// ═══════════════════════════════════════════
+window.goTab = function(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.querySelectorAll('.bni').forEach(b => b.classList.remove('on'));
+  document.getElementById('v-' + name).classList.add('on');
   btn.classList.add('on');
-  if(name==='edit')buildEdit();
-  // scroll to top
-  window.scrollTo({top:0,behavior:'instant'});
-}
+  if (name === 'edit') buildEdit();
+  window.scrollTo({top:0, behavior:'instant'});
+};
 
-// ═══════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════
-window.toast=function(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.classList.add('on');
-  setTimeout(()=>el.classList.remove('on'),3000);
-}
+window.toast = function(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  setTimeout(() => el.classList.remove('on'), 3000);
+};
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // BOOT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════
 renderAll();
 refresh();
-setInterval(refresh,5*60*1000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+setInterval(refresh, 5 * 60 * 1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
 </script>
 </body>
 </html>
