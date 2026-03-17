@@ -107,7 +107,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 /* ── TEAMS VIEW ── */
 .teams-stack{display:flex;flex-direction:column;gap:12px}
-.team-card{background:var(--s1);border:1px solid var(--rim);border-radius:16px;overflow:hidden}
+.team-card{background:var(--s1);border:1px solid var(--rim);border-radius:16px;overflow:hidden;animation:fadeUp .35s ease both}
 .team-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--rim)}
 .team-owner{font-size:16px;font-weight:600;color:var(--text);flex:1}
 .team-total{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:var(--orange);line-height:1;flex-shrink:0}
@@ -515,27 +515,53 @@ window.toggleCard = function(name) {
 
 function renderTeams() {
   const sorted = [...draft].sort((a,b) => draftTot(b) - draftTot(a));
-  document.getElementById('teamsStack').innerHTML = sorted.filter(d => d.name).map(dr => {
-    const rows = dr.picks.map(p => {
-      if (!p.player) return '';
+  const el = document.getElementById('teamsStack');
+
+  if (!sorted.some(d => d.name)) {
+    el.innerHTML = `<div class="empty">
+      <div class="ico">🏀</div>
+      <h3>No Teams Yet</h3>
+      <p>Tap <strong>Edit</strong> to enter your league's picks.</p>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = sorted.map((dr, i) => {
+    const label = dr.name || `Team ${i+1}`;
+    const tot   = draftTot(dr);
+    const picks = dr.picks.filter(p => p.player);
+
+    const rows = picks.map(p => {
       const pts = pickPts(p);
       const dot = p.eliminated ? 'out' : pts > 0 ? 'alive' : 'idle';
       return `<div class="pr ${p.eliminated?'elim':''}">
         ${logoImg(p.team)}
         <div class="pr-info">
           <div class="pr-name">${p.player}</div>
-          <div class="pr-team">${p.team||'—'}</div>
+          <div class="pr-team">${p.team || '—'}</div>
         </div>
         <div class="pr-dot ${dot}"></div>
         <div class="pr-pts">${pts || '—'}</div>
       </div>`;
     }).join('');
-    return `<div class="team-card">
+
+    // Empty pick slots (greyed out placeholders)
+    const empty = Array.from({length: 5 - picks.length}, (_, j) =>
+      `<div class="pr" style="opacity:.25">
+        <div class="pr-logofb">—</div>
+        <div class="pr-info"><div class="pr-name" style="color:var(--text3)">Empty pick</div></div>
+      </div>`
+    ).join('');
+
+    return `<div class="team-card" style="animation-delay:${i*.05}s">
       <div class="team-hdr">
-        <div class="team-owner">${dr.name}</div>
-        <div class="team-total">${draftTot(dr)}</div>
+        <div>
+          <div class="team-owner">${label}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:.5px">${picks.length} of 5 picks entered</div>
+        </div>
+        <div class="team-total">${tot || '—'}</div>
       </div>
-      <div class="team-players">${rows || '<div style="color:var(--text3);font-size:13px;padding:4px 0">No picks yet</div>'}</div>
+      <div class="team-players">${rows}${empty}</div>
     </div>`;
   }).join('');
 }
