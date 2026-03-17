@@ -436,7 +436,13 @@ function saveDraftLocal(){localStorage.setItem(KEY,JSON.stringify(draft))}
 // ═══════════════════════════════════════════════
 const PROXY='https://corsproxy.io/?';
 async function espn(url){
-  try{const r=await fetch(PROXY+encodeURIComponent(url));return r.ok?r.json():null}catch{return null}
+  try{
+    const ctrl=new AbortController();
+    const t=setTimeout(()=>ctrl.abort(),8000);
+    const r=await fetch(PROXY+encodeURIComponent(url),{signal:ctrl.signal});
+    clearTimeout(t);
+    return r.ok?r.json():null;
+  }catch{return null}
 }
 
 function roundKey(game){
@@ -452,16 +458,21 @@ function roundKey(game){
 
 async function refresh(){
   document.getElementById('updTxt').textContent='Updating…';
+
+  // Render immediately from local data so page is never frozen
+  renderAll();
+
   try{
     const sb=await espn('https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&limit=200');
+    if(!sb){ document.getElementById('updTxt').textContent='Offline'; return; }
+
     const events=sb?.events||[];
-    const completed=events.filter(e=>e.status?.type?.completed);
-    const live=events.filter(e=>e.status?.type?.state==='in');
-
-    // store bracket data for bracket view
     bracketData=events;
+    renderBracket(); // update bracket immediately with scoreboard data
 
-    // eliminations
+    const completed=events.filter(e=>e.status?.type?.completed);
+
+    // Build eliminations from scoreboard (no extra calls needed)
     const elim=new Set();
     for(const g of completed){
       for(const c of g.competitions||[]){
@@ -473,23 +484,28 @@ async function refresh(){
       }
     }
 
-    // player pts
+    // Fetch box scores in parallel (max 6 at a time to avoid hammering proxy)
     const pts={};
-    for(const g of completed){
-      const rk=roundKey(g);
-      const box=await espn(`https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/${g.id}/boxscore`);
-      for(const td of box?.players||[]){
-        for(const cat of td.statistics||[]){
-          const pi=(cat.labels||[]).indexOf('PTS');
-          for(const a of cat.athletes||[]){
-            const nm=(a.athlete?.displayName||'').toLowerCase();
-            if(!nm)continue;
-            const p=pi>=0?+(a.stats?.[pi]||0):0;
-            if(!pts[nm])pts[nm]={};
-            pts[nm][rk]=(pts[nm][rk]||0)+p;
+    const chunks=[];
+    for(let i=0;i<completed.length;i+=6) chunks.push(completed.slice(i,i+6));
+
+    for(const chunk of chunks){
+      await Promise.all(chunk.map(async g=>{
+        const rk=roundKey(g);
+        const box=await espn(`https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/${g.id}/boxscore`);
+        for(const td of box?.players||[]){
+          for(const cat of td.statistics||[]){
+            const pi=(cat.labels||[]).indexOf('PTS');
+            for(const a of cat.athletes||[]){
+              const nm=(a.athlete?.displayName||'').toLowerCase();
+              if(!nm)continue;
+              const p=pi>=0?+(a.stats?.[pi]||0):0;
+              if(!pts[nm])pts[nm]={};
+              pts[nm][rk]=(pts[nm][rk]||0)+p;
+            }
           }
         }
-      }
+      }));
     }
 
     let changed=false;
@@ -501,11 +517,13 @@ async function refresh(){
         if(JSON.stringify(p.pts)!==JSON.stringify(np)||p.eliminated!==ne){p.pts=np;p.eliminated=ne;changed=true}
       }
     }
-    if(changed)saveDraftLocal();
+    if(changed){ saveDraftLocal(); renderAll(); }
 
     document.getElementById('updTxt').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  }catch{document.getElementById('updTxt').textContent='Retry…'}
-  renderAll();
+  }catch(e){
+    document.getElementById('updTxt').textContent='Retry…';
+    console.warn('Refresh error:',e);
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -700,7 +718,6 @@ function buildEdit(){
             <input class="pick-inp" type="text" placeholder="Player name"
               value="${p.player}" autocomplete="off"
               oninput="onPlayerInput(this,${di},${pi})"
-              onfocus="onPlayerInput(this,${di},${pi})"
               onblur="setTimeout(()=>closeAC(${di},${pi}),200)"/>
             <input class="pick-inp team-inp" type="text" placeholder="Team"
               value="${p.team}" id="tinp-${di}-${pi}"
