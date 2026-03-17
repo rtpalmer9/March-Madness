@@ -753,52 +753,103 @@ function buildEdit(){
 }
 
 // Debounce timers per input slot
+// ── ROSTER CACHE ─────────────────────────────────────────────
+// ESPN team IDs for all 68 2026 tournament teams
+const TEAM_IDS = {
+  'Duke':150,'Arizona':12,'Michigan':130,'Florida':57,
+  'Houston':248,'Purdue':2509,'UConn':41,'Iowa State':66,
+  'Michigan State':127,'Illinois':356,'Gonzaga':2250,'Virginia':258,
+  'Nebraska':158,'Kansas':2305,'Arkansas':8,'Alabama':333,
+  'Wisconsin':275,'Vanderbilt':238,"St. John's":2599,'Texas Tech':2641,
+  'Louisville':97,'South Florida':58,'North Carolina':153,'BYU':252,
+  'Tennessee':2633,"Saint Mary's":2608,'Miami (Fla.)':2390,'UCLA':26,
+  'Kentucky':96,'Ohio State':194,'Georgia':61,'Villanova':222,
+  'Clemson':228,'TCU':2628,'Saint Louis':139,'Utah State':328,
+  'Iowa':2294,'Texas A&M':245,'Santa Clara':2608,'UCF':2116,
+  'Missouri':142,'VCU':2670,'Texas':251,'NC State':152,
+  'Miami (Ohio)':193,'SMU':2567,'Northern Iowa':2272,'High Point':2731,
+  'McNeese':2383,'Akron':2006,'Cal Baptist':2856,'Troy':2653,
+  'Hawaii':2229,'Hofstra':2234,'North Dakota State':2449,'Penn':219,
+  'Wright State':2737,'Kennesaw State':338,'Furman':231,'Queens':2797,
+  'Tennessee State':2393,'Idaho':70,'Siena':2561,'Long Island University':2363,
+  'UMBC':2378,'Howard':47,'Lehigh':2350,'Prairie View A&M':2440,
+};
+
+let rosterCache = {}; // { playerNameLower: { name, team } }
+let rosterLoaded = false;
+let rosterLoading = false;
+
+async function loadRosters() {
+  if (rosterLoaded || rosterLoading) return;
+  rosterLoading = true;
+  const ids = Object.entries(TEAM_IDS);
+  // Fetch in batches of 8
+  for (let i = 0; i < ids.length; i += 8) {
+    const batch = ids.slice(i, i + 8);
+    await Promise.all(batch.map(async ([teamName, teamId]) => {
+      try {
+        const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${teamId}/roster`;
+        const res = await fetch(PROXY + encodeURIComponent(url));
+        if (!res.ok) return;
+        const data = await res.json();
+        const athletes = data?.athletes || [];
+        for (const group of athletes) {
+          const items = group?.items || (Array.isArray(group) ? group : [group]);
+          for (const a of items) {
+            const name = a?.displayName || a?.fullName || a?.name;
+            if (!name) continue;
+            rosterCache[name.toLowerCase()] = { name, team: teamName };
+          }
+        }
+      } catch(e) { /* skip failed team */ }
+    }));
+  }
+  rosterLoaded = true;
+  rosterLoading = false;
+}
+
+// Kick off roster load in background immediately
+loadRosters();
+
+// ── AUTOCOMPLETE ─────────────────────────────────────────────
 const _acTimers = {};
 
-async function onPlayerInput(inp,di,pi){
-  const q = inp.value.trim();
-  _d[di].picks[pi].player = q;
+function onPlayerInput(inp,di,pi){
+  const q = inp.value.trim().toLowerCase();
+  _d[di].picks[pi].player = inp.value.trim();
   const acEl = document.getElementById(`ac-${di}-${pi}`);
-  if(!q || q.length < 3){ acEl.classList.remove('show'); acEl.innerHTML=''; return; }
+  if(!q || q.length < 2){ acEl.classList.remove('show'); acEl.innerHTML=''; return; }
 
-  // Show spinner immediately
-  acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;letter-spacing:1px;justify-content:center">Searching ESPN…</div>`;
-  acEl.classList.add('show');
-
-  // Debounce 380ms
   clearTimeout(_acTimers[`${di}-${pi}`]);
-  _acTimers[`${di}-${pi}`] = setTimeout(async () => {
-    try {
-      const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/athletes?limit=8&active=true&searchTerm=${encodeURIComponent(q)}`;
-      const res  = await fetch(PROXY + encodeURIComponent(url));
-      const data = res.ok ? await res.json() : null;
-      // ESPN returns either data.athletes or data.items depending on endpoint
-      const raw = data?.athletes || data?.items || [];
-      const athletes = raw.filter(a => a.displayName || a.fullName);
+  _acTimers[`${di}-${pi}`] = setTimeout(() => {
+    // Search the cached roster
+    const matches = Object.values(rosterCache)
+      .filter(p => p.name.toLowerCase().includes(q))
+      .slice(0, 6);
 
-      if(!athletes.length){
-        acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;justify-content:center">No results — type full name</div>`;
-        return;
+    if (!matches.length) {
+      if (!rosterLoaded) {
+        acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;justify-content:center">Loading rosters… try again shortly</div>`;
+      } else {
+        acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;justify-content:center">No match — check spelling or type manually</div>`;
       }
-
-      acEl.innerHTML = athletes.slice(0,6).map(a => {
-        const name  = a.displayName || a.fullName || '';
-        const team  = a.team?.displayName || a.team?.shortDisplayName || a.college?.name || '';
-        const safeN = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-        const safeT = team.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-        return `<div class="ac-item" onmousedown="selectPlayer(${di},${pi},'${safeN}','${safeT}')">
-          ${acLogoImg(team)}
-          <div class="ac-info">
-            <div class="ac-name">${name}</div>
-            <div class="ac-team">${team||'—'}</div>
-          </div>
-        </div>`;
-      }).join('');
       acEl.classList.add('show');
-    } catch(e) {
-      acEl.innerHTML=`<div class="ac-item" style="color:var(--text3);cursor:default;font-size:12px;justify-content:center">Search failed — type name manually</div>`;
+      return;
     }
-  }, 380);
+
+    acEl.innerHTML = matches.map(p => {
+      const safeN = p.name.replace(/'/g,"\'");
+      const safeT = p.team.replace(/'/g,"\'");
+      return `<div class="ac-item" onmousedown="selectPlayer(${di},${pi},'${safeN}','${safeT}')">
+        ${acLogoImg(p.team)}
+        <div class="ac-info">
+          <div class="ac-name">${p.name}</div>
+          <div class="ac-team">${p.team}</div>
+        </div>
+      </div>`;
+    }).join('');
+    acEl.classList.add('show');
+  }, 200);
 }
 
 window.selectPlayer=function(di,pi,name,team){
