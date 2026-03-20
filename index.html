@@ -416,7 +416,11 @@ async function refresh(){
         if(!pk.player)continue;
         var key=normName(pk.player);
         var np=pts[key]||{};
-        var ne=elim[pk.team.toLowerCase()]===true;
+        // Fuzzy elim: ESPN may return "Wisconsin Badgers" but pick stores "Wisconsin"
+        var teamLower=pk.team.toLowerCase();
+        var ne=false;
+        if(elim[teamLower]){ne=true;}
+        else{var ek=Object.keys(elim);for(var ei=0;ei<ek.length;ei++){if(ek[ei].indexOf(teamLower)!==-1||teamLower.indexOf(ek[ei])!==-1){ne=true;break;}}}
         var espnHasData=Object.keys(np).length>0;
         if(espnHasData&&JSON.stringify(pk.pts)!==JSON.stringify(np)){pk.pts=np;changed=true;}
         if(pk.eliminated!==ne){pk.eliminated=ne;changed=true;}
